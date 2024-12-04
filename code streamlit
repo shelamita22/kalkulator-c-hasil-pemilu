@@ -1,0 +1,87 @@
+import streamlit as st
+
+# Judul Aplikasi
+st.title("KALKULATOR C PLANO HASIL REKAPITULASI PEMUNGUTAN SUARA")
+
+# Menu Pilihan
+menu = st.selectbox("Pilih Jenis Pemilu:", ["Bupati", "Gubernur"])
+st.write(f"Anda memilih: **{menu}**")
+
+# 1. Data Pemilih dan Pengguna Hak Pilih
+st.header("1. Data Pemilih dan Pengguna Hak Pilih")
+# 1.1 Data Pemilih
+st.subheader("1.1 Data Pemilih dalam DPT")
+dpt_laki = st.number_input("Jumlah Pemilih Laki-laki dalam DPT", min_value=0, value=0)
+dpt_perempuan = st.number_input("Jumlah Pemilih Perempuan dalam DPT", min_value=0, value=0)
+total_dpt = dpt_laki + dpt_perempuan
+st.write(f"**Total DPT:** {total_dpt} pemilih")
+
+# 2. Pengguna Hak Pilih
+st.subheader("2. Pengguna Hak Pilih")
+# 2.1 Pengguna Hak Pilih dalam DPT
+dpt_pilih_laki = st.number_input("Pengguna Hak Pilih Laki-laki dalam DPT", min_value=0, value=0)
+dpt_pilih_perempuan = st.number_input("Pengguna Hak Pilih Perempuan dalam DPT", min_value=0, value=0)
+dpt_pilih_total = dpt_pilih_laki + dpt_pilih_perempuan
+st.write(f"Pengguna Hak Pilih dalam DPT: {dpt_pilih_total} pemilih")
+
+# 2.2 Pengguna Hak Pilih DPTB
+dptb_laki = st.number_input("Pengguna Hak Pilih Laki-laki dalam DPTB", min_value=0, value=0)
+dptb_perempuan = st.number_input("Pengguna Hak Pilih Perempuan dalam DPTB", min_value=0, value=0)
+dptb_total = dptb_laki + dptb_perempuan
+st.write(f"Pengguna Hak Pilih dalam DPTB: {dptb_total} pemilih")
+
+# 2.3 Pengguna Hak Pilih DPK
+dpk_laki = st.number_input("Pengguna Hak Pilih Laki-laki dalam DPK", min_value=0, value=0)
+dpk_perempuan = st.number_input("Pengguna Hak Pilih Perempuan dalam DPK", min_value=0, value=0)
+dpk_total = dpk_laki + dpk_perempuan
+st.write(f"Pengguna Hak Pilih dalam DPK: {dpk_total} pemilih")
+
+# 2.4 Total Pengguna Hak Pilih
+total_laki = dpt_pilih_laki + dptb_laki + dpk_laki
+total_perempuan = dpt_pilih_perempuan + dptb_perempuan + dpk_perempuan
+total_pengguna_hak_pilih = total_laki + total_perempuan
+st.write(f"**Total Pengguna Hak Pilih:** {total_pengguna_hak_pilih} pemilih (Laki-laki: {total_laki}, Perempuan: {total_perempuan})")
+
+# 3. Data Penggunaan Surat Suara
+st.header("3. Data Penggunaan Surat Suara")
+ss_diterima = st.number_input("Jumlah Surat Suara yang Diterima", min_value=0, value=0)
+ss_digunakan = st.number_input("Jumlah Surat Suara yang Digunakan oleh Pemilih", min_value=0, value=0)
+ss_rusak = st.number_input("Jumlah Surat Suara Rusak", min_value=0, value=0)
+ss_tidak_digunakan = ss_diterima - ss_digunakan - ss_rusak
+st.write(f"**Jumlah Surat Suara yang Tidak Digunakan:** {ss_tidak_digunakan}")
+
+# 4. Data Pemilih Disabilitas
+st.header("4. Data Pemilih Disabilitas")
+disabilitas_laki = st.number_input("Jumlah Pemilih Disabilitas Laki-laki", min_value=0, value=0)
+disabilitas_perempuan = st.number_input("Jumlah Pemilih Disabilitas Perempuan", min_value=0, value=0)
+total_disabilitas = disabilitas_laki + disabilitas_perempuan
+st.write(f"**Total Pemilih Disabilitas:** {total_disabilitas} pemilih")
+
+# 5. Data Perolehan Suara
+st.header("5. Data Rincian Perolehan Suara Sah Pasangan Calon")
+suara_sah = []
+idx = 1
+while True:
+    suara = st.number_input(f"Jumlah Suara Sah Pasangan Calon Nomor Urut {idx}", min_value=0, value=0, key=f"paslon_{idx}")
+    suara_sah.append(suara)
+    add_more = st.checkbox("Tambah Pasangan Calon?", key=f"add_{idx}")
+    if not add_more:
+        break
+    idx += 1
+total_suara_sah = sum(suara_sah)
+st.write(f"**Jumlah Seluruh Suara Sah:** {total_suara_sah}")
+
+# 6. Data Suara Sah dan Tidak Sah
+st.header("6. Data Suara Sah dan Tidak Sah")
+suara_tidak_sah = st.number_input("Jumlah Suara Tidak Sah", min_value=0, value=0)
+total_suara = total_suara_sah + suara_tidak_sah
+st.write(f"**Jumlah Seluruh Surat Suara Sah dan Tidak Sah:** {total_suara}")
+
+# Ringkasan
+st.header("Ringkasan Hasil Rekapitulasi")
+st.write(f"- Total DPT: {total_dpt}")
+st.write(f"- Total Pengguna Hak Pilih: {total_pengguna_hak_pilih}")
+st.write(f"- Total Surat Suara Diterima: {ss_diterima}")
+st.write(f"- Total Surat Suara Sah: {total_suara_sah}")
+st.write(f"- Total Surat Suara Tidak Sah: {suara_tidak_sah}")
+st.write(f"- Total Surat Suara Sah + Tidak Sah: {total_suara}")
